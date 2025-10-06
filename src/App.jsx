@@ -6,6 +6,7 @@ import Dashboard from "./components/Dashboard/Dashboard";
 import Home from "./components/Home/home";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import Nvbar from "./components/Navbar/Nvbar";
+import RecentBookings from './components/Booking/RecentBookings';
 
 function AppContent() {
   const location = useLocation();
@@ -19,6 +20,7 @@ function AppContent() {
         <Route path="/" element={<Home />} />
         <Route path="/auth" element={<Login />} />
         <Route path="/upload" element={<Dashboard />} />
+        <Route path="/bookings/recent" element={<RecentBookings />} />
       </Routes>
     </>
   );
