@@ -7,7 +7,7 @@ import {
   FiPause,
   FiMessageSquare,
 } from "react-icons/fi";
-import cicoVideo from "../../../assets/ciovd.mp4";
+import cicoVideo from "../../../assets/gord.mp4";
 
 const slideUp = keyframes`
   from { transform: translateY(50px); opacity: 0; }
@@ -187,7 +187,7 @@ const HeadingContainer = styled.div`
 const MainHeading = styled.h1`
   font-size: 4rem;
   font-weight: 700;
-  color: white;
+  color: orange;
   line-height: 1.1;
   text-align: left;
   letter-spacing: -0.025em;
@@ -305,7 +305,7 @@ const IconButton = styled.button`
   }
 `;
 
-const FoodAssistant = () => {
+const RoomAssistant = () => {
   const [message, setMessage] = useState("");
   const [isListening, setIsListening] = useState(false);
   const [isPlaying, setIsPlaying] = useState(true);
@@ -370,13 +370,13 @@ const FoodAssistant = () => {
       />
       <HeadingContainer>
         <MainHeading>
-          F{/**<OImage src="/zerotxt1.svg" alt="O" /> */}ood
+          R<OImage src="/zerotxt1.svg" alt="O" />M
           <GradientText>Service Assistant</GradientText>
         </MainHeading>
 
         <Description>
-          Order food in any language. Get personalized recommendations and
-          <HighlightText> seamless ordering experience</HighlightText> powered
+          Book Room from anywhere. Get personalized recommendations and
+          <HighlightText> seamless booking experience</HighlightText> powered
           by Lisa AI.
         </Description>
       </HeadingContainer>
@@ -428,4 +428,4 @@ const FoodAssistant = () => {
   );
 };
 
-export default FoodAssistant;
+export default RoomAssistant;

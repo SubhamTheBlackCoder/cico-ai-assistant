@@ -12,6 +12,7 @@ import RolesPage from "./components/roles/Assignment";
 import ActiveUsersPage from "./components/users/ActiveUser";
 import AgentsPage from "./components/Dashboard/Agents/Agent";
 import SearchBar from "./components/Agent-cico/food/FoodAgent";
+import RoomAssistant from "./components/Agent-cico/Room/RoomAgent";
 
 function AppContent() {
   const location = useLocation();
@@ -27,6 +28,7 @@ function AppContent() {
         <Route path="/active" element={<ActiveUsersPage />} />
         <Route path="/agents" element={<AgentsPage />} />
         <Route path="/roles/assignments" element={<RolesPage />} />
+        <Route path="/room-service/requests" element={<RoomAssistant />} />
         <Route path="/kitchen/menu" element={<SearchBar />} />
         <Route path="/upload" element={<Dashboard />} />
         <Route path="/account" element={<AdminPanel />} />
