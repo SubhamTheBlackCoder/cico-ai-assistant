@@ -1,5 +1,60 @@
-import React, { useEffect, useState } from "react";
-import { DataGrid } from "@mui/x-data-grid";
+import React, { useEffect, useState } from 'react';
+import { DataGrid } from '@mui/x-data-grid';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { purple, teal } from '@mui/material/colors';
+
+// Required for DataGrid theme overrides
+
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: purple[700],
+    },
+    secondary: {
+      main: teal[400],
+    },
+  },
+  components: {
+    MuiDataGrid: {
+      styleOverrides: {
+        root: {
+          border: 'none',
+          fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
+          fontWeight: 500,
+          fontSize: '0.9rem',
+          background: `linear-gradient(135deg, ${purple[900]}, ${teal[600]})`,
+          color: '#fff',
+        },
+        columnHeaders: {
+          backgroundColor: purple[900], // darker for better contrast
+          color: 'purple', // bright yellow for visibility
+          fontWeight: 'bold',
+          fontSize: '1rem',
+          borderBottom: `2px solid ${teal[300]}`,
+        },
+        row: {
+          '&:nth-of-type(odd)': {
+            backgroundColor: purple[700],
+          },
+          '&:nth-of-type(even)': {
+            backgroundColor: teal[500],
+          },
+          '&:hover': {
+            backgroundColor: teal[700],
+            cursor: 'pointer',
+          },
+        },
+        cell: {
+          borderBottom: `1px solid ${teal[300]}`,
+        },
+        footerContainer: {
+          backgroundColor: purple[800],
+          color: '#fff',
+        },
+      },
+    },
+  },
+});
 
 const columns = [
   { field: "booking_id", headerName: "Booking ID", width: 110 },
@@ -26,18 +81,24 @@ const columns = [
 export default function RecentBookings() {
   const [rows, setRows] = useState([]);
   useEffect(() => {
-    fetch("/api/recent-bookings")
+    fetch("http://192.168.29.66:5000/api/recent-bookings")
       .then(res => res.json())
-      .then(data => setRows(data));
+      .then(data => {
+        console.log(data); // Debug: check actual API data structure
+        setRows(data);
+      });
   }, []);
   return (
-    <div style={{ height: 600, width: "100%" }}>
-      <DataGrid
-        rows={rows}
-        columns={columns}
-        getRowId={row => row.booking_id}
-        pageSize={10}
-      />
-    </div>
+    <ThemeProvider theme={theme}>
+      <div style={{ height: 600, width: "100%" }}>
+        <DataGrid
+          rows={rows}
+          columns={columns}
+          getRowId={row => row.booking_id}
+          pageSize={10}
+          disableSelectionOnClick
+        />
+      </div>
+    </ThemeProvider>
   );
 }
