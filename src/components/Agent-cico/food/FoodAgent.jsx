@@ -28,7 +28,7 @@ const Container = styled.div`
 
 const VideoBackground = styled.div`
   position: fixed;
-  top: 100px;
+  top: 60px;
   left: 0;
   width: 100%;
   height: calc(100vh - 70px);
