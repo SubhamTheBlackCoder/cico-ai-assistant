@@ -1,6 +1,3 @@
-<<<<<<< HEAD
-import React, { useEffect, useState } from "react";
-=======
 import React, { useEffect, useState } from 'react';
 import { DataGrid } from '@mui/x-data-grid';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
@@ -104,7 +101,7 @@ const columns = [
   { field: "amount_paid", headerName: "Paid", width: 100 },
   { field: "payment_mode", headerName: "Pay Mode", width: 100 }
 ];
->>>>>>> 6cfee243f34ec2656aa865af9a5d68be5dbada80
+
 
 export default function RecentBookings() {
   const [rows, setRows] = useState([]);
