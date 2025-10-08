@@ -81,7 +81,7 @@ const columns = [
 export default function RecentBookings() {
   const [rows, setRows] = useState([]);
   useEffect(() => {
-    fetch("http://192.168.29.66:5000/api/recent-bookings")
+    fetch("http://10.116.20.114:5000/api/recent-bookings")
       .then(res => res.json())
       .then(data => {
         console.log(data); // Debug: check actual API data structure
