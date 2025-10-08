@@ -11,10 +11,10 @@ import AdminPanel from "./components/Account/AccountPanel";
 import RolesPage from "./components/roles/Assignment";
 import ActiveUsersPage from "./components/users/ActiveUser";
 import AgentsPage from "./components/Dashboard/Agents/Agent";
-import SearchBar from "./components/Agent-cico/food/FoodAgent";
+// import SearchBar from "./components/Agent-cico/food/FoodAgent";
 import RoomAssistant from "./components/Agent-cico/Room/RoomAgent";
 import RecentBookings from "./components/Booking/RecentBookings";
-
+import FoodAssistant from "./components/Agent-cico/food/FoodAgent";
 function AppContent() {
   const location = useLocation();
 
@@ -30,10 +30,10 @@ function AppContent() {
         <Route path="/agents" element={<AgentsPage />} />
         <Route path="/roles/assignments" element={<RolesPage />} />
         <Route path="/room-service/requests" element={<RoomAssistant />} />
-        <Route path="/kitchen/menu" element={<SearchBar />} />
         <Route path="/upload" element={<Dashboard />} />
         <Route path="/account" element={<AdminPanel />} />
         <Route path="/bookings/recent" element={<RecentBookings />} />
+        <Route path="/kitchen/menu" element={<FoodAssistant />} />
       </Routes>
     </>
   );

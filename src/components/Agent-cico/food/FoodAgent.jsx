@@ -8,6 +8,7 @@ import {
   FiMessageSquare,
 } from "react-icons/fi";
 import cicoVideo from "../../../assets/ciovd.mp4";
+import useFoodAgent from "./useFoodAgent";
 
 const slideUp = keyframes`
   from { transform: translateY(50px); opacity: 0; }
@@ -311,6 +312,7 @@ const FoodAssistant = () => {
   const [isPlaying, setIsPlaying] = useState(true);
   const videoRef = useRef(null);
   const inputRef = useRef(null);
+  const { messages, loading, sendMessage } = useFoodAgent();
 
   useEffect(() => {
     const v = videoRef.current;
@@ -327,23 +329,28 @@ const FoodAssistant = () => {
 
   const handleInputChange = (e) => setMessage(e.target.value);
 
+  // Voice input handler
+  const handleMicClick = () => {
+    setIsListening(true);
+    const SpeechRecognition =
+      window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SpeechRecognition) return;
+    const recognition = new SpeechRecognition();
+    recognition.lang = "en-IN";
+    recognition.onresult = (event) => {
+      setMessage(event.results[0][0].transcript);
+      setIsListening(false);
+    };
+    recognition.onerror = () => setIsListening(false);
+    recognition.start();
+  };
+
+  // Submit handler
   const handleSubmit = (e) => {
     e.preventDefault();
     if (message.trim()) {
-      console.log("Message sent:", message);
+      sendMessage(message);
       setMessage("");
-    }
-  };
-
-  const handleMicClick = () => {
-    setIsListening(!isListening);
-    console.log("Microphone clicked");
-  };
-
-  const handleKeyDown = (e) => {
-    if (e.key === "Enter" && !e.shiftKey) {
-      e.preventDefault();
-      handleSubmit(e);
     }
   };
 
@@ -380,6 +387,22 @@ const FoodAssistant = () => {
           by Lisa AI.
         </Description>
       </HeadingContainer>
+
+      <div style={{
+      width: "100%", maxWidth: 700, margin: "0 auto",
+      marginBottom: "18px", padding: "10px 0",
+      display: "flex", flexDirection: "column", justifyContent: "flex-end",
+    }}>
+    {messages.slice(-6).map((msg, i) => (
+      <div style={{
+        alignSelf: msg.role === "user" ? "flex-end" : "flex-start",
+        background: msg.role === "user" ? "#E0F2F1" : "#F3E5F5",
+        borderRadius: 8, padding: "8px 16px", margin: "4px 0"
+      }} key={i}>
+        {msg.content}
+      </div>
+    ))}
+  </div>
 
       <InputSection>
         <InputContainer>

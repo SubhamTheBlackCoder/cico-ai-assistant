@@ -33,7 +33,7 @@ export default function RecentBookings() {
   ];
 
   return (
-    <div style={{ width: "100%", overflowX: "auto", marginTop: "100px" }}>
+    <div style={{ width: "100%", overflowX: "auto", marginTop: "10%" }}>
       <table
         style={{
           width: "100%",
