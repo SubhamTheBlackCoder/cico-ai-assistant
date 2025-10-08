@@ -15,6 +15,8 @@ import AgentsPage from "./components/Dashboard/Agents/Agent";
 import RoomAssistant from "./components/Agent-cico/Room/RoomAgent";
 import RecentBookings from "./components/Booking/RecentBookings";
 import FoodAssistant from "./components/Agent-cico/food/FoodAgent";
+import AddModifyBookings from "./components/Booking/Add_Modify-Booking";
+
 function AppContent() {
   const location = useLocation();
 
@@ -33,6 +35,7 @@ function AppContent() {
         <Route path="/upload" element={<Dashboard />} />
         <Route path="/account" element={<AdminPanel />} />
         <Route path="/bookings/recent" element={<RecentBookings />} />
+        <Route path="/bookings/manage" element={<AddModifyBookings />} />
         <Route path="/kitchen/menu" element={<FoodAssistant />} />
       </Routes>
     </>

@@ -90,16 +90,7 @@ const columns = [
   { field: "checkout_date", headerName: "Check-out", width: 110 },
   { field: "booking_status", headerName: "Status", width: 100 },
   { field: "booking_date", headerName: "Booking Date", width: 120 },
-  { field: "payment_status", headerName: "Payment Status", width: 120 },
-  { field: "total_amount", headerName: "Total Amt", width: 100 },
-  { field: "no_of_rooms", headerName: "Rooms", width: 80 },
-  { field: "no_of_guests", headerName: "Guests", width: 80 },
-  { field: "ota_name", headerName: "OTA", width: 120 },
-  { field: "room_type", headerName: "Room Type", width: 120 },
-  { field: "meal_plan", headerName: "Meal Plan", width: 120 },
-  { field: "ratePerNight", headerName: "Rate/Night", width: 120 },
-  { field: "amount_paid", headerName: "Paid", width: 100 },
-  { field: "payment_mode", headerName: "Pay Mode", width: 100 }
+  { field: "payment_status", headerName: "Payment Status", width: 120 }
 ];
 
 
@@ -107,7 +98,7 @@ export default function RecentBookings() {
   const [rows, setRows] = useState([]);
 
   useEffect(() => {
-    fetch("http://10.116.20.114:5000/api/recent-bookings")
+    fetch("http://172.24.50.213:5000/api/recent-bookings")
       .then((res) => res.json())
       .then((data) => setRows(data))
       .catch((err) => console.error("Error fetching data:", err));
@@ -124,19 +115,10 @@ export default function RecentBookings() {
     "Status",
     "Booking Date",
     "Payment Status",
-    "Total Amt",
-    "Rooms",
-    "Guests",
-    "OTA",
-    "Room Type",
-    "Meal Plan",
-    "Rate/Night",
-    "Paid",
-    "Pay Mode",
   ];
 
   return (
-    <div style={{ width: "100%", overflowX: "auto", marginTop: "10%" }}>
+    <div style={{ width: "100%", overflowX: "auto", marginTop: "10%", marginLeft: typeof isSidebarOpen === 'boolean' && isSidebarOpen ? '25%' : 0 }}>
       <table
         style={{
           width: "100%",
@@ -181,15 +163,6 @@ export default function RecentBookings() {
               <td style={tdStyle}>{row.booking_status}</td>
               <td style={tdStyle}>{row.booking_date}</td>
               <td style={tdStyle}>{row.payment_status}</td>
-              <td style={tdStyle}>{row.total_amount}</td>
-              <td style={tdStyle}>{row.no_of_rooms}</td>
-              <td style={tdStyle}>{row.no_of_guests}</td>
-              <td style={tdStyle}>{row.ota_name}</td>
-              <td style={tdStyle}>{row.room_type}</td>
-              <td style={tdStyle}>{row.meal_plan}</td>
-              <td style={tdStyle}>{row.ratePerNight}</td>
-              <td style={tdStyle}>{row.amount_paid}</td>
-              <td style={tdStyle}>{row.payment_mode}</td>
             </tr>
           ))}
         </tbody>
