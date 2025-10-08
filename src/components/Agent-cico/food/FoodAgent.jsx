@@ -7,8 +7,12 @@ import {
   FiPause,
   FiMessageSquare,
 } from "react-icons/fi";
+<<<<<<< HEAD
 import cicoVideo from "../../../assets/ciovd.mp4";
 import useFoodAgent from "./useFoodAgent";
+=======
+import cicoVideo from "../../../assets/cico.mp4";
+>>>>>>> 6cfee243f34ec2656aa865af9a5d68be5dbada80
 
 const slideUp = keyframes`
   from { transform: translateY(50px); opacity: 0; }
