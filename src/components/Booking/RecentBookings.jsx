@@ -21,15 +21,33 @@ const theme = createTheme({
           border: 'none',
           fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
           fontWeight: 500,
+      
+          margin: '60px',
+          '@media (max-width: 768px)': {
+            margin: '20px',
+            fontSize: '0.8rem',
+          },
+          '@media (max-width: 480px)': {
+            top: '110px',
+            margin: '10px',
+            fontSize: '0.75rem',
+          },
           fontSize: '0.9rem',
           background: `linear-gradient(135deg, ${purple[900]}, ${teal[600]})`,
           color: '#fff',
         },
         columnHeaders: {
-          backgroundColor: purple[900], // darker for better contrast
-          color: 'purple', // bright yellow for visibility
+          backgroundColor: purple[900],
+          color: 'purple',
           fontWeight: 'bold',
           fontSize: '1rem',
+      
+          '@media (max-width: 768px)': {
+            fontSize: '0.9rem',
+          },
+          '@media (max-width: 480px)': {
+            fontSize: '0.8rem',
+          },
           borderBottom: `2px solid ${teal[300]}`,
         },
         row: {
@@ -46,6 +64,13 @@ const theme = createTheme({
         },
         cell: {
           borderBottom: `1px solid ${teal[300]}`,
+       
+          '@media (max-width: 768px)': {
+            padding: '8px',
+          },
+          '@media (max-width: 480px)': {
+            padding: '6px',
+          },
         },
         footerContainer: {
           backgroundColor: purple[800],
@@ -55,7 +80,6 @@ const theme = createTheme({
     },
   },
 });
-
 const columns = [
   { field: "booking_id", headerName: "Booking ID", width: 110 },
   { field: "guestName", headerName: "Guest Name", width: 140 },
