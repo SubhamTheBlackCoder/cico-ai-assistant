@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
+import { GrUpdate } from "react-icons/gr";
+import { MdDeleteForever } from "react-icons/md";
 
-export default function RecentBookings(props) {
+
+export default function RecentBookings({ data = [], showModify = false, onModifyClick, onDeleteClick}) {
   const [rows, setRows] = useState([]);
-  const { showModify = false, onModifyClick } = props;
 
   useEffect(() => {
     fetch("http://127.0.0.1:5000/api/recent-bookings")
@@ -17,7 +19,8 @@ export default function RecentBookings(props) {
   const tdStyle = {
     border: "1px solid #ccc",
     padding: "10px 12px",
-    fontSize: 13,
+    fontSize: 12,
+    fontFamily:"Tahoma",
     whiteSpace: "nowrap",
   };
 
@@ -50,7 +53,7 @@ export default function RecentBookings(props) {
             <th style={{ ...tdStyle }}>Status</th>
             <th style={{ ...tdStyle }}>Booking Date</th>
             <th style={{ ...tdStyle }}>Payment Status</th>
-             {showModify && <th style={tdStyle}>Modify</th>}
+             {showModify && <th style={tdStyle}>Modify/Delete</th>}
           </tr>
         </thead>
         <tbody>
@@ -70,8 +73,11 @@ export default function RecentBookings(props) {
                 <td style={tdStyle}>{row.payment_status}</td>
                 {showModify && (
                   <td style={tdStyle}>
-                    <button style={modifyBtnStyle} onClick={() => onModifyClick && onModifyClick(row)}>
-                      Modify
+                    <button style={modifyBtnStyle} onClick={() => onModifyClick && onModifyClick(row) } >
+                      <GrUpdate style={{color: "#0b5ee3"}} />
+                    </button>
+                    <button style={modifyBtnStyle} onClick={() => onDeleteClick && onDeleteClick(row.booking_id)} >
+                         <MdDeleteForever style={{color: "red"}} />
                     </button>
                   </td>
                 )}
