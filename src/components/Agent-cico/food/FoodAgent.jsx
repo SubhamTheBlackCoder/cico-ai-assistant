@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import styled, { keyframes, css } from "styled-components";
 import { FiMic, FiSend, FiMessageSquare, FiVideo, FiX } from "react-icons/fi";
 import cicoVideo from "../../../assets/cico.mp4";
-import cicoBackgroundImage from "../../../assets/bgstarc.jpg";
+import cicoBackgroundImage from "../../../assets/bgstarc.png";
 import useFoodAgent from "./useFoodAgent";
 import { SiProbot } from "react-icons/si";
 import { FcBiohazard, FcVideoCall } from "react-icons/fc";
@@ -33,6 +33,33 @@ const pulseAnimation = keyframes`
   0% { transform: scale(1); }
   50% { transform: scale(1.2); }
   100% { transform: scale(1); }
+`;
+
+// Voice-synced shaking animations
+const voiceShakeSoft = keyframes`
+  0%, 100% { transform: translateX(0) rotate(0deg); }
+  25% { transform: translateX(-1px) rotate(-0.5deg); }
+  75% { transform: translateX(1px) rotate(0.5deg); }
+`;
+
+const voiceShakeMedium = keyframes`
+  0%, 100% { transform: translateX(0) rotate(0deg); }
+  25% { transform: translateX(-2px) rotate(-1deg); }
+  75% { transform: translateX(2px) rotate(1deg); }
+`;
+
+const voiceShakeStrong = keyframes`
+  0%, 100% { transform: translateX(0) rotate(0deg); }
+  25% { transform: translateX(-3px) rotate(-1.5deg); }
+  75% { transform: translateX(3px) rotate(1.5deg); }
+`;
+
+const voiceShakeIntense = keyframes`
+  0%, 100% { transform: translateX(0) rotate(0deg); }
+  20% { transform: translateX(-4px) rotate(-2deg); }
+  40% { transform: translateX(3px) rotate(1.5deg); }
+  60% { transform: translateX(-3px) rotate(-1.5deg); }
+  80% { transform: translateX(4px) rotate(2deg); }
 `;
 
 const Container = styled.div`
@@ -87,30 +114,46 @@ const ImageBackground = styled.div`
 `;
 
 const HeadingContainer = styled.div`
+  display: flex;
+  align-items: flex-start;
   margin-bottom: 32px;
+  gap: 8px;
+`;
+
+const BlueBar = styled.div`
+  width: 4px;
+  height: 60px;
+  background: #2563eb;
+  border-radius: 2px;
+  flex-shrink: 0;
+  margin-top: 70px;
+`;
+
+const ContentWrapper = styled.div`
+  flex: 1;
 `;
 
 const MainHeading = styled.h1`
-  font-size: 4rem;
-  font-weight: 700;
+  font-size: 1.25rem;
+  font-weight: 600;
   color: white;
-  line-height: 1.1;
+  line-height: 1.3;
   text-align: left;
-  letter-spacing: -0.025em;
-  margin-bottom: 16px;
-
+  letter-spacing: -0.01em;
+  margin-bottom: 6px;
+  margin-left: 0;
   @media screen and (max-width: 768px) {
-    font-size: 2.5rem;
-    margin-top: 180px;
+    font-size: 1.125rem;
+    margin-top: 72px;
   }
 
   @media screen and (min-width: 1024px) {
-    font-size: 2rem;
+    font-size: 1.25rem;
   }
 
   @media screen and (min-width: 1280px) {
-    font-size: 4rem;
-    margin-top: 200px;
+    font-size: 1.375rem;
+    margin-top: 65px;
   }
 `;
 
@@ -124,15 +167,17 @@ const GradientText = styled.span`
 `;
 
 const Description = styled.p`
-  font-size: 1.125rem;
-  color: rgba(255, 255, 255, 0.8);
-  max-width: 512px;
-  line-height: 1.6;
-  font-weight: 300;
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.7);
+  max-width: 350px;
+  line-height: 1.4;
+  font-weight: 400;
   text-align: left;
+  margin: 0;
+  margin-left: 0;
 
   @media screen and (min-width: 768px) {
-    font-size: 1.25rem;
+    font-size: 0.8125rem;
   }
 `;
 
@@ -179,8 +224,8 @@ const SearchContainer = styled.div`
   align-items: center;
   background: ${(props) =>
     props.$isChatMode ? "#ffffff" : "rgba(255, 255, 255, 0.08)"};
-  border-radius: 25px;
-  padding: 14px 22px;
+  border-radius: 40px;
+  padding: 9px 22px;
   border: ${(props) =>
     props.$isChatMode
       ? "1px solid rgba(0, 0, 0, 0.12)"
@@ -365,12 +410,31 @@ const IconButton = styled.button`
 
   &.ai-mode-button {
     color: #ff6b6b;
+    ${(props) =>
+      props.$voiceLevel > 0 &&
+      css`
+        background: rgba(255, 107, 107, ${0.1 + props.$voiceLevel * 0.2});
+        border-color: rgba(255, 107, 107, ${0.3 + props.$voiceLevel * 0.5});
+        box-shadow: 0 0 ${10 + props.$voiceLevel * 20}px rgba(255, 107, 107, ${0.3 + props.$voiceLevel * 0.3});
+      `}
+
+    ${(props) => {
+      if (props.$voiceLevel === 0) return '';
+      if (props.$voiceLevel < 0.25) 
+        return css`animation: ${voiceShakeSoft} 0.1s infinite;`;
+      if (props.$voiceLevel < 0.5) 
+        return css`animation: ${voiceShakeMedium} 0.1s infinite;`;
+      if (props.$voiceLevel < 0.75) 
+        return css`animation: ${voiceShakeStrong} 0.08s infinite;`;
+      return css`animation: ${voiceShakeIntense} 0.06s infinite;`;
+    }}
 
     &:hover {
       background: rgba(255, 107, 107, 0.15);
       border-color: rgba(255, 107, 107, 0.3);
       ${(props) =>
         !props.$isChatMode &&
+        !props.$voiceLevel &&
         css`
           animation: ${glowAnimation} 1.5s ease-in-out infinite;
         `}
@@ -474,7 +538,6 @@ const SimpleMessage = styled.div`
   max-width: 70%;
 `;
 
-
 const AIModeContainer = styled.div`
   position: fixed;
   top: 0;
@@ -523,7 +586,7 @@ const CenterMicButton = styled.button`
   backdrop-filter: blur(10px);
 
   &:hover {
-    transform: scale(2.1);
+    transform: scale(1.1);
     background: ${(props) =>
       props.$isListening
         ? "rgba(255, 107, 107, 0.3)"
@@ -568,67 +631,173 @@ const FoodAssistant = () => {
   const [isListening, setIsListening] = useState(false);
   const [isChatMode, setIsChatMode] = useState(false);
   const [isAIMode, setIsAIMode] = useState(false);
+  const [voiceLevel, setVoiceLevel] = useState(0);
   const inputRef = useRef(null);
   const messagesEndRef = useRef(null);
-  const { messages, loading, sendMessage } = useFoodAgent();
+  const mediaRecorderRef = useRef(null);
+  const audioContextRef = useRef(null);
+  const analyserRef = useRef(null);
+  const animationRef = useRef(null);
+  const recognitionRef = useRef(null);
+  const mediaStreamRef = useRef(null);
+
+  // hooks for 3 mode ai, main, chat
+  const mainPageAgent = useFoodAgent(false);
+  const chatModeAgent = useFoodAgent(false);
+  const aiModeAgent = useFoodAgent(true);
+
+  // Audio analysis for voice-synced animations
+  const startVoiceAnalysis = async () => {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      mediaStreamRef.current = stream;
+      
+      audioContextRef.current = new (window.AudioContext || window.webkitAudioContext)();
+      analyserRef.current = audioContextRef.current.createAnalyser();
+      const source = audioContextRef.current.createMediaStreamSource(stream);
+      
+      analyserRef.current.fftSize = 256;
+      source.connect(analyserRef.current);
+
+      const dataArray = new Uint8Array(analyserRef.current.frequencyBinCount);
+
+      const analyzeVoice = () => {
+        if (!analyserRef.current) return;
+
+        analyserRef.current.getByteFrequencyData(dataArray);
+        
+        // Calculate average volume
+        let sum = 0;
+        for (let i = 0; i < dataArray.length; i++) {
+          sum += dataArray[i];
+        }
+        const average = sum / dataArray.length;
+        const normalizedVolume = Math.min(average / 128, 1); // Normalize to 0-1
+        
+        setVoiceLevel(normalizedVolume);
+        animationRef.current = requestAnimationFrame(analyzeVoice);
+      };
+
+      animationRef.current = requestAnimationFrame(analyzeVoice);
+    } catch (error) {
+      console.error('Error accessing microphone:', error);
+    }
+  };
+
+  const stopVoiceAnalysis = () => {
+    if (animationRef.current) {
+      cancelAnimationFrame(animationRef.current);
+    }
+    if (audioContextRef.current) {
+      audioContextRef.current.close();
+      audioContextRef.current = null;
+    }
+    if (mediaStreamRef.current) {
+      mediaStreamRef.current.getTracks().forEach(track => track.stop());
+      mediaStreamRef.current = null;
+    }
+    setVoiceLevel(0);
+  };
+
+  const stopSpeechRecognition = () => {
+    if (recognitionRef.current) {
+      recognitionRef.current.stop();
+      recognitionRef.current = null;
+    }
+  };
 
   const handleInputChange = (e) => setMessage(e.target.value);
 
+  const handleAIModeMicClick = async () => {
+    if (isListening) {
+      // Stop listening
+      setIsListening(false);
+      stopVoiceAnalysis();
+      stopSpeechRecognition();
+      return;
+    }
 
-  const handleMicClick = () => {
+    // Start listening
     setIsListening(true);
-    const SpeechRecognition =
-      window.SpeechRecognition || window.webkitSpeechRecognition;
+    await startVoiceAnalysis();
+
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
     if (!SpeechRecognition) {
       setIsListening(false);
+      stopVoiceAnalysis();
       return;
     }
 
     const recognition = new SpeechRecognition();
+    recognitionRef.current = recognition;
+    
     recognition.lang = "en-IN";
+    recognition.continuous = true;
+    recognition.interimResults = true;
+
+    let finalTranscript = '';
+
     recognition.onresult = (event) => {
-      const transcript = event.results[0][0].transcript;
-      setMessage(transcript);
-      setIsListening(false);
-    };
-    recognition.onerror = () => setIsListening(false);
-    recognition.onend = () => setIsListening(false);
-    recognition.start();
-  };
+      let interimTranscript = '';
+      
+      for (let i = event.resultIndex; i < event.results.length; i++) {
+        const transcript = event.results[i][0].transcript;
+        if (event.results[i].isFinal) {
+          finalTranscript += transcript;
+        } else {
+          interimTranscript += transcript;
+        }
+      }
+      
+      // Update input with interim results
+      setMessage(finalTranscript + interimTranscript);
 
-
-  const handleAIModeMicClick = () => {
-    setIsListening(true);
-    const SpeechRecognition =
-      window.SpeechRecognition || window.webkitSpeechRecognition;
-    if (!SpeechRecognition) {
-      setIsListening(false);
-      return;
-    }
-
-    const recognition = new SpeechRecognition();
-    recognition.lang = "en-IN";
-    recognition.onresult = (event) => {
-      const transcript = event.results[0][0].transcript;
-      setMessage(transcript);
-      setIsListening(false);
-
-   
-      if (transcript.trim()) {
-        sendMessage(transcript);
-        setMessage("");
+      // Check if speech has ended (no interim results for a moment)
+      if (interimTranscript === '' && finalTranscript !== '') {
+        // Speech completed, stop listening
+        if (finalTranscript.trim()) {
+          aiModeAgent.sendMessage(finalTranscript);
+          setMessage("");
+          // Stop listening after successful speech recognition
+          setIsListening(false);
+          stopVoiceAnalysis();
+          stopSpeechRecognition();
+        }
       }
     };
-    recognition.onerror = () => setIsListening(false);
-    recognition.onend = () => setIsListening(false);
-    recognition.start();
-  };
 
+    recognition.onerror = (event) => {
+      console.error('Speech recognition error:', event.error);
+      setIsListening(false);
+      stopVoiceAnalysis();
+      stopSpeechRecognition();
+    };
+
+    recognition.onend = () => {
+      // Only restart if we're still supposed to be listening
+      if (isListening && recognitionRef.current === recognition) {
+        // Restart recognition if it ended unexpectedly
+        recognition.start();
+      }
+    };
+
+    try {
+      recognition.start();
+    } catch (error) {
+      console.error('Error starting speech recognition:', error);
+      setIsListening(false);
+      stopVoiceAnalysis();
+    }
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (message.trim()) {
-      sendMessage(message);
+      if (isChatMode) {
+        chatModeAgent.sendMessage(message);
+      } else {
+        mainPageAgent.sendMessage(message);
+      }
       setMessage("");
     }
   };
@@ -642,22 +811,29 @@ const FoodAssistant = () => {
 
   const handleToggleChatMode = () => {
     setIsChatMode(!isChatMode);
+    setMessage("");
   };
 
   const handleAIModeToggle = () => {
     setIsAIMode(true);
+    setMessage("");
   };
 
   const handleCloseAIMode = () => {
+    // Stop all recording and analysis when closing AI mode
+    if (isListening) {
+      setIsListening(false);
+      stopVoiceAnalysis();
+      stopSpeechRecognition();
+    }
     setIsAIMode(false);
-    setIsListening(false);
+    setMessage("");
   };
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages]);
+  }, [chatModeAgent.messages]);
 
- 
   useEffect(() => {
     const handleEscape = (e) => {
       if (e.key === "Escape" && isAIMode) {
@@ -669,7 +845,15 @@ const FoodAssistant = () => {
     return () => window.removeEventListener("keydown", handleEscape);
   }, [isAIMode]);
 
-  //  AI Mode
+  // Clean up on unmount
+  useEffect(() => {
+    return () => {
+      stopVoiceAnalysis();
+      stopSpeechRecognition();
+    };
+  }, []);
+
+  // AI Mode
   if (isAIMode) {
     return (
       <AIModeContainer>
@@ -687,7 +871,7 @@ const FoodAssistant = () => {
         <CenterMicButton
           onClick={handleAIModeMicClick}
           $isListening={isListening}
-          title="Click and speak"
+          title={isListening ? "Stop listening" : "Click and speak"}
         >
           <FiMic />
         </CenterMicButton>
@@ -695,26 +879,29 @@ const FoodAssistant = () => {
     );
   }
 
-  //  video mode main page (default)
+  // Video mode main page (default)
   if (!isChatMode) {
     return (
       <Container>
         <VideoBackground autoPlay loop muted src={cicoVideo} type="video/mp4" />
         <HeadingContainer>
-          <MainHeading>
-            Food
-            <GradientText>Service Assistant</GradientText>
-          </MainHeading>
+          <BlueBar />
+          <ContentWrapper>
+            <MainHeading>
+              Food
+              <GradientText>Service Assistant</GradientText>
+            </MainHeading>
 
-          <Description>
-            Order food in any language. Get personalized recommendations and
-            <HighlightText> seamless ordering experience</HighlightText> powered
-            by Lisa AI.
-          </Description>
+            <Description>
+              Order food in any language. Get personalized recommendations and
+              <HighlightText> seamless ordering experience</HighlightText>{" "}
+              powered by Lisa AI.
+            </Description>
+          </ContentWrapper>
         </HeadingContainer>
 
         <SimpleMessageContainer>
-          {messages.slice(-6).map((msg, i) => (
+          {mainPageAgent.messages.slice(-6).map((msg, i) => (
             <SimpleMessage $isUser={msg.role === "user"} key={i}>
               {msg.content}
             </SimpleMessage>
@@ -737,7 +924,7 @@ const FoodAssistant = () => {
                 <IconButton
                   type="submit"
                   className="send-button"
-                  disabled={!message.trim()}
+                  disabled={!message.trim() || mainPageAgent.loading}
                   title="Send message"
                   $isChatMode={isChatMode}
                 >
@@ -762,6 +949,7 @@ const FoodAssistant = () => {
               className="ai-mode-button"
               title="Activate AI Mode"
               $isChatMode={isChatMode}
+              $voiceLevel={isListening ? voiceLevel : 0}
             >
               <FcBiohazard size={20} />
             </IconButton>
@@ -771,13 +959,13 @@ const FoodAssistant = () => {
     );
   }
 
-  //  chat mode page
+  // Chat mode page
   return (
     <Container>
       <ImageBackground $bgImage={cicoBackgroundImage} />
 
       <MessagesContainer>
-        {messages.map((msg, i) => (
+        {chatModeAgent.messages.map((msg, i) => (
           <MessageWrapper key={i} $isUser={msg.role === "user"}>
             {msg.role !== "user" && (
               <RobotIcon>
@@ -808,7 +996,7 @@ const FoodAssistant = () => {
               <IconButton
                 type="submit"
                 className="send-button"
-                disabled={!message.trim()}
+                disabled={!message.trim() || chatModeAgent.loading}
                 title="Send message"
                 $isChatMode={isChatMode}
               >
@@ -819,22 +1007,12 @@ const FoodAssistant = () => {
 
           <IconButton
             type="button"
-            onClick={handleMicClick}
-            className={isListening ? "mic-active" : ""}
-            title="Voice input"
-            $isChatMode={isChatMode}
-          >
-            <FiMic size={20} />
-          </IconButton>
-
-          <IconButton
-            type="button"
             className="chat-button"
             onClick={handleToggleChatMode}
-            title="Switch to Video Mode"
+            title="Switch to main Mode"
             $isChatMode={isChatMode}
           >
-            <FcVideoCall size={20} />
+            <FiX size={30} />
           </IconButton>
         </InputContainer>
       </InputSection>

@@ -21,7 +21,7 @@ const modalStyle = {
   position: "relative",
   width: 500,
   background: "#fff",
-  borderRadius: 10,
+  borderRadius: 5,
   boxShadow: "0 8px 40px rgba(0,0,0,0.2)",
   padding: "36px 32px",
   zIndex: 1500,
@@ -127,7 +127,8 @@ export default function AddModifyBooking() {
         }}
       >
         <Button variant="contained" onClick={handleAddClick}>
-          <LuUserRoundPlus style={{ fontSize: "22px", color: "white" }} /> Add Booking
+          <LuUserRoundPlus style={{ fontSize: "15px", color: "white" }} /> <div style={{fontSize: 10,
+    fontFamily:"Tahoma", marginLeft:"5px"}}>Add Booking</div>
         </Button>
       </div>
 

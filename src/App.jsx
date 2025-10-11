@@ -16,6 +16,9 @@ import RoomAssistant from "./components/Agent-cico/Room/RoomAgent";
 import RecentBookings from "./components/Booking/RecentBookings";
 import FoodAssistant from "./components/Agent-cico/food/FoodAgent";
 import AddModifyBookings from "./components/Booking/Add_Modify-Booking";
+import StartScreen from "./components/Document Verification/FaceScan/StartScreen";
+import ScanningScreen from "./components/Document Verification/FaceScan/ScanningScreen";
+import SuccessScreen from "./components/Document Verification/FaceScan/SuccessScreen";
 
 function AppContent() {
   const location = useLocation();
@@ -37,6 +40,9 @@ function AppContent() {
         <Route path="/bookings/recent" element={<RecentBookings />} />
         <Route path="/bookings/manage" element={<AddModifyBookings />} />
         <Route path="/kitchen/menu" element={<FoodAssistant />} />
+        <Route path="/documents/faceverification" element={<StartScreen />} />
+        <Route path="/scan" element={<ScanningScreen />} />
+        <Route path="/success" element={<SuccessScreen />} />
       </Routes>
     </>
   );

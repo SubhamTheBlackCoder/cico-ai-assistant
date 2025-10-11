@@ -432,6 +432,15 @@ const Nvbar = () => {
                     <SubMenuLabel>Agents</SubMenuLabel>
                   </SubMenuLink>
                 </SubMenuItem>
+                <SubMenuItem>
+                  <SubMenuLink
+                    as={Link}
+                    to="/qrcode"
+                    onClick={closeMobileSidebar}
+                  >
+                    <SubMenuLabel>My QR Code</SubMenuLabel>
+                  </SubMenuLink>
+                </SubMenuItem>
               </SubMenuContainer>
             )}
           </MenuItem>
@@ -664,6 +673,15 @@ const Nvbar = () => {
                     onClick={closeMobileSidebar}
                   >
                     <SubMenuLabel>Documents Repository</SubMenuLabel>
+                  </SubMenuLink>
+                </SubMenuItem>
+                <SubMenuItem>
+                  <SubMenuLink
+                    as={Link}
+                    to="/documents/faceverification"
+                    onClick={closeMobileSidebar}
+                  >
+                    <SubMenuLabel>Face Verification</SubMenuLabel>
                   </SubMenuLink>
                 </SubMenuItem>
               </SubMenuContainer>

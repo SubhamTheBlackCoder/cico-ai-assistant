@@ -19,7 +19,7 @@ export default function RecentBookings({ data = [], showModify = false, onModify
   const tdStyle = {
     border: "1px solid #ccc",
     padding: "10px 12px",
-    fontSize: 12,
+    fontSize: 10,
     fontFamily:"Tahoma",
     whiteSpace: "nowrap",
   };
